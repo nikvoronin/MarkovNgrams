@@ -1,88 +1,118 @@
-﻿using StringPair = (string, string);
+﻿const int NumberOfSentencesToGenerate = 1;
+const int PrefixWordsNumber = 2;
 
-const int GenerateSentenceNumber = 3;
+Dictionary<List<string>, List<string>> ngrams = new(new StringListComparer());
 
-Dictionary<StringPair, List<string>> ngrams = [];
-var word1 = string.Empty;
-var word2 = string.Empty;
+var prefixWords = New_EmptyStringsList( PrefixWordsNumber );
 
-// Build ngrams table indexed by pair of prefix words (w1, w2)
+// Builds ngrams table indexed by pair of prefix words
 foreach (var line in Stdin_ReadLines()) {
-    foreach (var word in SplitWords(line)) {
-        AddTrio(
-            ngrams,
-            (word1, word2), word );
-
-        (word1, word2) = (word2, word);
+    foreach (var nextWord in SplitWords( line )) {
+        AddNgram( ngrams, prefixWords, nextWord );
+        prefixWords = prefixWords[1..]; // Creates a new list!
+        prefixWords.Add( nextWord );
     }
 }
 
 // Avoid empty ngrams lists at end of input
-AddTrio( ngrams, (word1, word2), string.Empty );
-AddTrio( ngrams, (word2, string.Empty), string.Empty );
+for (int i = 0; i < PrefixWordsNumber; i++) {
+    AddNgram( ngrams, prefixWords, string.Empty );
+    prefixWords = prefixWords[1..];
+    prefixWords.Add( string.Empty );
+}
 
 // Print interesting ngrams
-//foreach (var k in ngrams.Keys) {
-//    if (ngrams[k].Count >= 2)
-//        Console.WriteLine( $"{k.Item1}, {k.Item2}: {string.Join( " | ", ngrams[k] )}" );
-//}
+//Stdout_PrintNgrams( ngrams, 2 );
 
 var output = new List<string>();
-(word1, word2) = FindRandomCapitalLetterWord( ngrams );
-output.Add( word1 );
-output.Add( word2 );
+var keyGrams = FindRandomCapitalLetterPrefixWord( ngrams );
+output.AddRange( keyGrams );
 
 int sentences = 0;
 for (int i = 0; i < ngrams.Count; i++) {
-    var words = ngrams[(word1, word2)];
-    var word =
-        words.ElementAt(
-            words.Count == 1 ? 0
-            : Random.Shared.Next( words.Count ) );
+    var nextWords = ngrams[keyGrams];
+    var nextWord =
+        nextWords.ElementAt(
+            nextWords.Count == 1 ? 0
+            : Random.Shared.Next( nextWords.Count ) );
 
-    output.Add( word );
+    output.Add( nextWord );
 
-    if (word.Contains( '.' )) sentences++;
-    if (sentences >= GenerateSentenceNumber) break;
+    if (nextWord.Contains( '.' )) sentences++;
+    if (sentences >= NumberOfSentencesToGenerate) break;
 
-    (word1, word2) = (word2, word);
+    keyGrams = keyGrams[1..];
+    keyGrams.Add(nextWord );
 }
 
 Console.WriteLine(
     string.Join( ' ', output ) );
+
+static void Stdout_PrintNgrams(
+    Dictionary<List<string>, List<string>> ngrams,
+    int interestNumber )
+{
+    foreach (var prefixWords in ngrams.Keys) {
+        if (ngrams[prefixWords].Count >= interestNumber) {
+            Console.WriteLine(
+                $"{string.Join( " ", prefixWords )}: {string.Join( " | ", ngrams[prefixWords] )}" );
+        }
+    }
+}
 
 static string[] SplitWords( string line )
     => line.Split( ' ',
         StringSplitOptions.RemoveEmptyEntries
         | StringSplitOptions.TrimEntries );
 
-static void AddTrio(
-    Dictionary<StringPair, List<string>> ngrams,
-    StringPair pair,
-    string word )
+static void AddNgram(
+    Dictionary<List<string>, List<string>> ngrams,
+    List<string> prefixWords,
+    string nextWord )
 {
-    if (ngrams.TryGetValue( pair, out List<string>? value ))
-        value.Add( word );
+    if (ngrams.TryGetValue( prefixWords, out List<string>? nextWords ))
+        nextWords.Add( nextWord );
     else
-        ngrams[pair] = [word];
+        ngrams[prefixWords] = [nextWord];
 }
 
-static StringPair FindRandomCapitalLetterWord(
-    Dictionary<StringPair, List<string>> ngrams )
+static List<string> FindRandomCapitalLetterPrefixWord(
+    Dictionary<List<string>, List<string>> ngrams )
 {
     for (int i = 0; i < ngrams.Count; i++) {
-        var pairIndex = Random.Shared.Next( ngrams.Count );
-        var pair = ngrams.Keys.ElementAt( pairIndex );
-        if (pair.Item1.FirstOrDefault() is char ch)
-            if (char.IsUpper( ch )) return pair;
+        var gramIndex = Random.Shared.Next( ngrams.Count );
+        var prefixWords = ngrams.Keys.ElementAt( gramIndex );
+        if (prefixWords[0].FirstOrDefault() is char ch)
+            if (char.IsUpper( ch )) return prefixWords;
     }
 
-    return (string.Empty, string.Empty);
+    return New_EmptyStringsList( PrefixWordsNumber );
 }
+
+static List<string> New_EmptyStringsList( int capacity )
+    => Enumerable
+    .Repeat( string.Empty, capacity )
+    .ToList();
 
 static IEnumerable<string> Stdin_ReadLines()
 {
     string? line;
     while ((line = Console.ReadLine()) != null)
         yield return line;
+}
+
+// See https://stackoverflow.com/questions/54491136/create-a-dictionary-with-key-as-listof-string/54492137#54492137
+sealed class StringListComparer : EqualityComparer<List<string>>
+{
+    public override bool Equals( List<string> x, List<string> y )
+        => System.Collections.StructuralComparisons
+        .StructuralEqualityComparer
+        .Equals(
+            x?.ToArray(),
+            y?.ToArray() );
+
+    public override int GetHashCode( List<string> x )
+        => System.Collections.StructuralComparisons
+        .StructuralEqualityComparer
+        .GetHashCode( x?.ToArray() );
 }
