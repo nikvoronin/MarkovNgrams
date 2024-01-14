@@ -4,17 +4,16 @@ Based on [Using a Markov chain to generate readable nonsense with 20 lines of Py
 
 ## Outputs
 
+Lewis Carroll. Alice's adventures in Wonderland
+
 ```shell
 > cat .\alice.txt | .\MarkovNgrams.exe
-Free Software Foundation and Richard M.
-
-> cat .\alice.txt | .\MarkovNgrams.exe
-There's no pleasing them!'   Alice replied in an agony of terror.
 ```
+Just at this moment Alice felt a little more conversation with her face like the look of the shepherd boy--and the sneeze of the creature, but on second thoughts she decided on going into the wood.
+
+There's no pleasing them!'   Alice replied in an agony of terror.
 
 ## Ngrams for Alice
-
-Lewis Carroll. Alice's adventures in Wonderland
 
 ```text
 the jury    : eagerly | asked. | had | wrote | consider
