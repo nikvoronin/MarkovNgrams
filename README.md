@@ -23,9 +23,7 @@ on his      : flappers, | spectacles | spectacles. | knee, | slate
 So they     : went | sat | began | got | had | got | couldn't
 
 the Gryphon,: half | and | `she | and | before | sighing | `you | with | `that | and | and, | the | and
-
 the Gryphon.: Alice | `It's | `--you | `Of | `Then, | `Back | `We | `I've | `The | `Do | `I | `It | `How | `Well, | `They
-
 the Gryphon : answered, | said | went | never | remarked | interrupted | replied | went | replied | added | in | as | hastily. | repeated | went | said, | only | whispered
 ```
 
