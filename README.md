@@ -1,6 +1,6 @@
 # Markov Ngrams
 
-Based on [Using a Markov chain to generate readable nonsense with 20 lines of Python](https://benhoyt.com/writings/markov-chain/). November 2023
+Based on [Using a Markov chain to generate readable nonsense with 20 lines of Python](https://benhoyt.com/writings/markov-chain/). // Nov 2023
 
 ## Outputs
 
@@ -9,9 +9,10 @@ Lewis Carroll. Alice's adventures in Wonderland
 ```shell
 > cat .\alice.txt | .\MarkovNgrams.exe
 ```
-Just at this moment Alice felt a little more conversation with her face like the look of the shepherd boy--and the sneeze of the creature, but on second thoughts she decided on going into the wood.
 
-There's no pleasing them!'   Alice replied in an agony of terror.
+"Just at this moment Alice felt a little more conversation with her face like the look of the shepherd boy--and the sneeze of the creature, but on second thoughts she decided on going into the wood."
+
+"There's no pleasing them!'   Alice replied in an agony of terror."
 
 ## Ngrams for Alice
 
