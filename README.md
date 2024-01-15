@@ -28,7 +28,7 @@ the Gryphon : answered, | said | went | never | remarked | interrupted | replied
 
 ## Repeated but why?
 
-Words choose random. If words repeat often then they will appear more often.
+Words are chosen randomly. If words are repeated more often, they will be appear more often.
 
 ```text
 before the  : trial's | end | trial's | officer
