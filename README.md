@@ -1,4 +1,4 @@
-# Markov Ngrams
+# Ngrams For Alice
 
 Based on [Using a Markov chain to generate readable nonsense with 20 lines of Python](https://benhoyt.com/writings/markov-chain/). // Nov 2023
 
@@ -14,7 +14,7 @@ Lewis Carroll. Alice's adventures in Wonderland
 
 "There's no pleasing them!'   Alice replied in an agony of terror."
 
-## Ngrams for Alice
+## Ngram internals
 
 ```text
 the jury    : eagerly | asked. | had | wrote | consider
